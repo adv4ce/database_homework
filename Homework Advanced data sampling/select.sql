@@ -30,7 +30,11 @@ join genre on singer_genre.genre_id = genre.id
 group by genre.name
 order by genre.name
 
+select a.name, AVG(duration)
+from album a, track t
+group by a.name
 
+  
 select singer.name 
 from singer
 join singer_album on singer.id = singer_album.singer_id
