@@ -10,8 +10,8 @@ where duration >= 210
 
 
 select name
-from collection
-where '2022-01-01' <= release and '2023-12-31' >= release
+from collection cl
+where cl.release >= '2018-01-01' and cl.release <= '2020-01-01'
 
 
 select name
@@ -21,7 +21,7 @@ where name like '% %' = false
 
 select name
 from track
-where name like '%d%'
+where name ~* '\y(my)\y'
 
 
 select genre.name as genre_name, count(distinct singer_genre.singer_id)
@@ -33,11 +33,13 @@ order by genre.name
 
 select singer.name 
 from singer
-join singer_album on singer.id = singer_album.singer_id
-join album on singer_album.album_id = album.id
-where album.release < '2020-01-01' or album.release > '2020-12-31'
-group by singer.name 
-order by singer.name 
+where singer.name not in(
+	select singer.name
+	from singer
+	join singer_album sa on sa.singer_id = singer.id
+	join album alb on alb.id = sa.album_id
+	where date_part('year', alb.release) = '2020'
+);
 
 
 select collection.name
